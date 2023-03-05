@@ -1,4 +1,4 @@
-package com.roberto.iban.utils;
+package com.roberto.iban;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
