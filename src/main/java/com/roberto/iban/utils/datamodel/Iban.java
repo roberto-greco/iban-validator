@@ -7,18 +7,21 @@ public class Iban {
     private String iban;
     private String country;
     private String bankCode;
+    private String branchCode;
     private String accountNumber;
     private String checkDigit;
+    private IbanInfo info;
+    private boolean valid;
 
-    public String getInfo() {
+    public IbanInfo getInfo() {
         return info;
     }
 
-    public void setInfo(String info) {
+    public void setInfo(IbanInfo info) {
         this.info = info;
     }
 
-    private String info;
+   
 
     public Iban() {
     }
@@ -75,4 +78,20 @@ public class Iban {
     public void setCheckDigit(String checkDigit) {
         this.checkDigit = checkDigit;
     }
+
+	public String getBranchCode() {
+		return branchCode;
+	}
+
+	public void setBranchCode(String branchCode) {
+		this.branchCode = branchCode;
+	}
+
+	public boolean isValid() {
+		return valid;
+	}
+
+	public void setValid(boolean valid) {
+		this.valid = valid;
+	}
 }
