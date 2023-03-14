@@ -26,4 +26,16 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 		return new ResponseEntity<Object>(err,HttpStatus.NOT_FOUND);
 	}
 
+	
+	@ExceptionHandler(IbanFormatNotSupportedException.class)
+	public ResponseEntity<Object> handleIbanFormatNotFoundException(IbanFormatNotSupportedException ex) {
+       
+	//ResponseEntity<T> errResp= new 
+		//ApiError err = new ApiError(LocalDateTime.now(),HttpStatus.NOT_FOUND, "Resource Not Found" ,details);
+		HashMap<String, Object> err= new HashMap<>();
+		err.put("timestamp", LocalDateTime.now());
+		err.put("details", ex.getMessage());
+		
+		return new ResponseEntity<Object>(err,HttpStatus.NOT_ACCEPTABLE);
+	}
 }

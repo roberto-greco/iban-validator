@@ -2,6 +2,8 @@ package com.roberto.iban.utils;
 
 import java.util.HashMap;
 
+import com.roberto.iban.utils.exception.CountryNotSupportedException;
+
 public class IbanComposer {
 
     public static HashMap<String,String>  oddCharConversionTable;
@@ -162,22 +164,33 @@ public class IbanComposer {
         euCinConversionTable.put("Z","35");
     }
 
-    public String calculateBBAN(String countryCode, String abi, String cab,String account) throws Exception
+    public String calculateBBAN(String countryCode, String abi, String cab,String account) throws CountryNotSupportedException, Exception
     {
 
-        if("IT".equals(countryCode)){
+        if("IT".equalsIgnoreCase(countryCode)){
             return calculateITBBAN(abi,cab,account);
         }
-        if("IE".equals(countryCode)){
+        else if("IE".equalsIgnoreCase(countryCode)){
             return calculateIEBBAN(abi,cab,account);
         }
+        else if("DE".equalsIgnoreCase(countryCode)){
+            return calculateDEBBAN(abi,cab,account);
+        }
+        else if("AE".equalsIgnoreCase(countryCode)){
+            return calculateAEBBAN(abi,cab,account);
+        }
         else{
-            throw new Exception("country code not supported");
+            throw new CountryNotSupportedException("country code not supported");
         }
 
     }
 
-    private String calculateITBBAN(String abi, String cab, String account) {
+    private String calculateAEBBAN(String abi, String cab, String account) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	private String calculateITBBAN(String abi, String cab, String account) {
 
         String ibanConto=this.padLeftZeros(account,12);
         // 1 - calculate bban :
@@ -210,7 +223,16 @@ public class IbanComposer {
         return bban;
     }
 
-
+    /**
+     * 
+     * Calculate IE BBAAN 
+     * @param abi
+     * @param cab
+     * @param account
+     * @return
+     * @throws Exception
+     */
+    
     private String calculateIEBBAN(String abi, String cab, String account)throws Exception{
 
         try {
@@ -218,7 +240,24 @@ public class IbanComposer {
                 return abi+padLeftZeros(cab,6)+padLeftZeros(account,8);
             }
             else{
-                throw new Exception("abi or cab or account not vaild");
+                throw new Exception("bank or branch or account length not vaild");
+            }
+        }
+        catch(Exception e){
+            throw e;
+        }
+
+    }
+    
+    
+    private String calculateDEBBAN(String abi, String cab, String account)throws Exception{
+
+        try {
+            if(8==abi.length()&&account.length()<=10){
+                return abi+padLeftZeros(account,10);
+            }
+            else{
+                throw new Exception("bank or branch or account length not vaild");
             }
         }
         catch(Exception e){
@@ -227,28 +266,7 @@ public class IbanComposer {
 
     }
 
-    public static void main(String[] args) {
-        String abi="AIBK";
-        String cab="931152";
-        String conto="12345678";
 
-        IbanComposer ic= new IbanComposer();
-        try {
-            String bban=ic.calculateBBAN("IE",abi,cab,conto);
-            String iban=ic.calculateIBAN("IE", bban);
-            System.out.println("abi:" + abi+ ", cab: "+cab+", conto: "+conto+", country: IE ---> iban:" +iban);
-        }
-        catch (Exception e)
-        {
-            System.out.println("Main - exception caught: "+ e.getMessage());
-            e.printStackTrace();
-        }
-
-
-
-
-
-    }
 
     public String calculateIBAN(String countryCode, String bban) {
 
@@ -318,4 +336,26 @@ public class IbanComposer {
 
         return sb.toString();
     }
+//  public static void main(String[] args) {
+//  String abi="AIBK";
+//  String cab="931152";
+//  String conto="12345678";
+//
+//  IbanComposer ic= new IbanComposer();
+//  try {
+//      String bban=ic.calculateBBAN("IE",abi,cab,conto);
+//      String iban=ic.calculateIBAN("IE", bban);
+//      System.out.println("abi:" + abi+ ", cab: "+cab+", conto: "+conto+", country: IE ---> iban:" +iban);
+//  }
+//  catch (Exception e)
+//  {
+//      System.out.println("Main - exception caught: "+ e.getMessage());
+//      e.printStackTrace();
+//  }
+//
+//
+//
+//
+//
+//}
 }
